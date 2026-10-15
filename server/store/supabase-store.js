@@ -11,6 +11,7 @@
 //     updated_at timestamptz not null default now()
 //   );
 //   alter table islands enable row level security;  -- sin políticas: solo la service key accede
+//   grant select, insert, update on table islands to service_role;
 export class SupabaseStore {
   constructor(url, serviceKey, table = 'islands') {
     if (!url || !serviceKey) throw new Error('Faltan SUPABASE_URL o SUPABASE_SERVICE_KEY');

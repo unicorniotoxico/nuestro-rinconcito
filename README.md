@@ -82,13 +82,16 @@ El juego necesita un servidor que esté prendido (Node.js + WebSocket) y un luga
      updated_at timestamptz not null default now()
    );
    alter table islands enable row level security;
+   grant select, insert, update on table islands to service_role;
    ```
 
-   Después, en **Project Settings → API**, copiá la **Project URL** y la **secret key** (`sb_secret_...`; en proyectos viejos se llama `service_role`). Esa clave es secreta: va solo en el servidor.
+   Después tocá el botón **Connect** (arriba en el panel) o andá a **Project Settings → API Keys**, y copiá la **Project URL** (`https://xxxx.supabase.co`) y la **secret key** (`sb_secret_...`; en proyectos viejos se llama `service_role`). Esa clave es secreta: va solo en el servidor.
 
 2. **Render** (el servidor): tocá este botón, conectá tu GitHub y pegá los dos datos cuando te los pida.
 
    [![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/unicorniotoxico/nuestro-rinconcito)
+
+   (Si el botón no carga, abrí `https://dashboard.render.com/blueprint/new?repo=https://github.com/unicorniotoxico/nuestro-rinconcito`.)
 
    Al terminar te da una dirección tipo `https://nuestro-rinconcito.onrender.com`. Esa es la que abren los dos celulares.
 
