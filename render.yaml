@@ -6,6 +6,7 @@ services:
     name: nuestro-rinconcito
     runtime: node
     plan: free
+    region: virginia   # la más cercana a Argentina entre las gratis
     buildCommand: npm ci --omit=dev || npm install --omit=dev
     startCommand: node server/index.js
     healthCheckPath: /healthz
