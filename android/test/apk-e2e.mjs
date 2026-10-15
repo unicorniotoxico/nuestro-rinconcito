@@ -153,6 +153,9 @@ try {
   step('9. Cerrar la app del todo y volver a entrar: sigue siendo Lau');
   await shell(`am force-stop ${PKG}`);
   await sleep(800);
+  // la vista web anterior murió con la app: reconectar para no agarrar la vieja
+  try { device.close(); } catch { /* */ }
+  [device] = await android.devices({ omitDriverInstall: true });
   await abrirApp();
   A = await paginaDelJuego();
   await A.waitForURL(/10\.0\.2\.2:3000/, { timeout: 60_000 });
