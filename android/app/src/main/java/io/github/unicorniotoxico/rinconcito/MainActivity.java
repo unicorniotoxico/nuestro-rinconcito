@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.view.WindowInsets;
 import android.view.WindowInsetsController;
 import android.view.WindowManager;
+import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
@@ -31,7 +32,8 @@ import android.widget.FrameLayout;
  * del servidor, espera a que "despierte" (Render gratis se duerme) y comparte
  * invitaciones con las apps del teléfono.
  *
- * Comandos que entiende desde las páginas (enlaces rinconcito://...):
+ * Las páginas le hablan a la app con el objeto JavaScript "RinconcitoApp" (ver Puente)
+ * o, como alternativa, con enlaces rinconcito://...:
  *   guardar?servidor=URL[&abrir=URL]   guarda la dirección y abre la isla
  *   config                              pantalla para cambiar el servidor
  *   inicio                              pantalla de "conectando"
@@ -74,6 +76,7 @@ public class MainActivity extends Activity {
 
         web.setWebChromeClient(new WebChromeClient());
         web.setWebViewClient(new Cliente());
+        web.addJavascriptInterface(new Puente(), "RinconcitoApp");
 
         SharedPreferences p = getSharedPreferences(PREFS, MODE_PRIVATE);
         servidor = p.getString("servidor", BuildConfig.SERVIDOR_POR_DEFECTO);
@@ -149,6 +152,27 @@ public class MainActivity extends Activity {
             default:
                 break;
         }
+    }
+
+    /**
+     * Lo que pueden pedirle a la app las páginas que muestra (solo el juego y la
+     * pantalla de inicio: cualquier otra dirección se abre en el navegador).
+     * Nada de esto da acceso a datos del teléfono.
+     */
+    private class Puente {
+        private void ui(Runnable r) { runOnUiThread(r); }
+        @JavascriptInterface public void compartir(String texto) {
+            ui(() -> comando(Uri.parse("rinconcito://compartir?texto=" + Uri.encode(texto == null ? "" : texto))));
+        }
+        @JavascriptInterface public void config() { ui(() -> comando(Uri.parse("rinconcito://config"))); }
+        @JavascriptInterface public void inicio() { ui(() -> comando(Uri.parse("rinconcito://inicio"))); }
+        @JavascriptInterface public void minimizar() { ui(() -> moveTaskToBack(true)); }
+        @JavascriptInterface public void guardar(String servidor, String abrir) {
+            String u = "rinconcito://guardar?servidor=" + Uri.encode(servidor == null ? "" : servidor)
+                    + (abrir != null && !abrir.isEmpty() ? "&abrir=" + Uri.encode(abrir) : "");
+            ui(() -> comando(Uri.parse(u)));
+        }
+        @JavascriptInterface public String version() { return BuildConfig.VERSION_NAME; }
     }
 
     private void abrirAfuera(Uri u) {

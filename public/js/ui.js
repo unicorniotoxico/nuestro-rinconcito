@@ -404,7 +404,7 @@ export class UI {
       body.append(h('div', { class: 'card' }, h('h4', { text: 'Servidor de la isla' }),
         h('p', { class: 'small code-key', text: location.origin }),
         h('p', { class: 'small', text: 'Tu llave queda guardada en este celular. Si cambiás de servidor, vas a empezar en otra isla.' }),
-        h('button', { type: 'button', class: 'btn ghost', onclick: () => { location.href = 'rinconcito://config'; } }, 'Cambiar servidor')));
+        h('button', { type: 'button', class: 'btn ghost', onclick: () => { if (window.RinconcitoApp) window.RinconcitoApp.config(); else location.href = 'rinconcito://config'; } }, 'Cambiar servidor')));
     }
     const install = h('div', { class: 'card app-hide' }, h('h4', { text: 'Instalar en el celular' }));
     if (window.__installPrompt) install.append(h('button', { type: 'button', class: 'btn primary', onclick: async () => { window.__installPrompt.prompt(); window.__installPrompt = null; } }, 'Instalar app'));

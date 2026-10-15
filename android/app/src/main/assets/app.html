@@ -80,6 +80,12 @@
 
   function params() { return new URLSearchParams(location.hash.slice(1)); }
   function ir(url) { location.href = url; }
+  var app = window.RinconcitoApp || null;   // puente con la app (si no está, se usan enlaces rinconcito://)
+  function pedir(accion, a, b) {
+    if (app && app[accion]) { app[accion](a, b); return; }
+    if (accion === 'guardar') ir('rinconcito://guardar?servidor=' + encodeURIComponent(a) + (b ? '&abrir=' + encodeURIComponent(b) : ''));
+    else ir('rinconcito://' + accion);
+  }
 
   // Acepta "mi-isla.onrender.com", "https://mi-isla.onrender.com/", o un enlace con ?codigo=
   function interpretar(texto) {
@@ -104,9 +110,7 @@
       .catch(function () { clearTimeout(t); return false; });
   }
 
-  function guardar(origen, abrir) {
-    ir('rinconcito://guardar?servidor=' + encodeURIComponent(origen) + (abrir ? '&abrir=' + encodeURIComponent(abrir) : ''));
-  }
+  function guardar(origen, abrir) { pedir('guardar', origen, abrir || ''); }
 
   // ------------------------------------------------------------ conectando
   function modoInicio(p) {
@@ -147,7 +151,7 @@
       timer = setTimeout(function () { $('spin').hidden = false; $('reintentar').hidden = true; $('inicio-err').textContent = ''; paso(); }, 4000);
     } else paso();
     $('reintentar').onclick = function () { location.hash = 'modo=inicio&servidor=' + encodeURIComponent(servidor) + (abrir ? '&abrir=' + encodeURIComponent(abrir) : '') + '&n=' + Date.now(); };
-    $('ir-config').onclick = function () { clearTimeout(timer); ir('rinconcito://config'); };
+    $('ir-config').onclick = function () { clearTimeout(timer); pedir('config'); };
   }
 
   // ------------------------------------------------------------ configurar
@@ -176,7 +180,7 @@
       });
     };
     $('guardar-igual').onclick = function () { if (pendiente) guardar(pendiente.origen, pendiente.abrir); };
-    $('volver').onclick = function () { ir('rinconcito://inicio'); };
+    $('volver').onclick = function () { pedir('inicio'); };
     $('campo').onkeydown = function (e) { if (e.key === 'Enter') $('conectar').click(); };
     if (!actual) setTimeout(function () { $('campo').focus(); }, 300);
   }

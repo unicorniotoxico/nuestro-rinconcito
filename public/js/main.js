@@ -31,7 +31,8 @@ if (EN_APP) {
   if (!navigator.share) {
     navigator.share = (d = {}) => {
       const texto = [d.text, d.url].filter(Boolean).join(' ');
-      location.href = 'rinconcito://compartir?texto=' + encodeURIComponent(texto);
+      if (window.RinconcitoApp) window.RinconcitoApp.compartir(texto);
+      else location.href = 'rinconcito://compartir?texto=' + encodeURIComponent(texto);
       return Promise.resolve();
     };
   }
