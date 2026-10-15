@@ -58,6 +58,12 @@ Usa **dos navegadores Chromium independientes** emulando un **iPhone 13** y un *
 
 Las capturas quedan en la carpeta que indiques con `SHOTS=./capturas npm run test:e2e`.
 
+También verifica que la PWA sea instalable (service worker registrado, manifest `standalone` con íconos 192/512 y *maskable*).
+
+## Integración continua
+
+Las dos suites corren en **GitHub Actions** en cada push (`.github/workflows/pruebas.yml`), sobre una máquina limpia: `npm ci`, pruebas del servidor y el recorrido con dos navegadores. Las capturas se pueden descargar desde la pestaña *Actions* del repo (artefacto `capturas-e2e`).
+
 ## Lo que NO pude probar (pendiente con celulares de verdad)
 
 - **Safari / iPhone real**: el motor WebKit no estaba disponible en el entorno; se probó con Chromium **emulando** un iPhone. Hay que confirmar en un iPhone real: sonido después del primer toque, instalación con "Agregar a inicio", áreas seguras (notch) y gestos.

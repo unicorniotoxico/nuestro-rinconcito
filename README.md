@@ -1,5 +1,7 @@
 # Nuestro rinconcito 🏝️💛
 
+[![Pruebas](https://github.com/unicorniotoxico/nuestro-rinconcito/actions/workflows/pruebas.yml/badge.svg)](https://github.com/unicorniotoxico/nuestro-rinconcito/actions/workflows/pruebas.yml)
+
 Un juego tierno para dos: llegan a una islita y construyen su hogar juntos. Cultivan, pescan, juntan materiales, decoran la casa, exploran una cueva con criaturas simpáticas, cuidan a un carpincho y se dejan regalos en el buzón. Es **cooperativo**, con desafíos amistosos de 3–4 minutos, y está pensado para partidas de 10 a 20 minutos desde el celular.
 
 <p align="center">
@@ -161,7 +163,7 @@ npm run test:e2e    # recorrido completo con DOS navegadores (iPhone + Android e
                     # (la primera vez: npx playwright install chromium)
 ```
 
-Qué está probado, qué no y las limitaciones conocidas: **[docs/PRUEBAS.md](docs/PRUEBAS.md)**.
+Las dos suites corren solas en **GitHub Actions** en cada cambio (las capturas del recorrido quedan como artefacto descargable). Qué está probado, qué no y las limitaciones conocidas: **[docs/PRUEBAS.md](docs/PRUEBAS.md)**.
 
 ## Estructura
 
