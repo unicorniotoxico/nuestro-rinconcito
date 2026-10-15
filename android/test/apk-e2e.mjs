@@ -19,8 +19,12 @@ const step = (m) => console.log('\n▶', m);
 const [device] = await android.devices({ omitDriverInstall: true });
 assert.ok(device, 'no hay ningún dispositivo Android conectado');
 console.log('Dispositivo:', device.model(), device.serial());
-const shot = (n) => device.screenshot({ path: path.join(OUT, n + '.png') });
 const shell = async (cmd) => (await device.shell(cmd)).toString();
+const limpiarAvisos = () => shell('am broadcast -a android.intent.action.CLOSE_SYSTEM_DIALOGS').catch(() => '');
+const shot = async (n, limpiar = true) => { if (limpiar) { await limpiarAvisos(); await sleep(300); } return device.screenshot({ path: path.join(OUT, n + '.png') }); };
+// Los botones que le hablan a la app (rinconcito://...) no navegan de verdad:
+// no hay que esperar a que "termine la navegación".
+const tocar = (loc) => loc.click({ noWaitAfter: true });
 const abrirApp = () => shell(`am start -W -n ${PKG}/.MainActivity`);
 
 async function paginaDelJuego() {
@@ -63,9 +67,9 @@ try {
   ok('isla creada en la app, código ' + code);
 
   step('3. Compartir la invitación con el menú de Android');
-  await A.getByRole('button', { name: 'Compartir' }).click();
+  await tocar(A.getByRole('button', { name: 'Compartir' }));
   await sleep(2500);
-  await shot('04-compartir-android');
+  await shot('04-compartir-android', false);
   const top = await shell('dumpsys activity activities | grep -E "topResumedActivity|mResumedActivity" | head -3');
   console.log('   actividad al frente:', top.trim().split('\n')[0]);
   assert.match(top, /ChooserActivity|ResolverActivity|intentresolver/i, 'debería abrirse el menú de compartir del teléfono');
@@ -111,12 +115,12 @@ try {
   step('7. Cambiar servidor desde Ajustes y volver');
   await A.locator('button[aria-label="Menú"]').click();
   await A.getByRole('tab', { name: 'Ajustes' }).click();
-  await A.getByRole('button', { name: 'Cambiar servidor' }).click();
+  await tocar(A.getByRole('button', { name: 'Cambiar servidor' }));
   await A.waitForURL(/android_asset\/app\.html#modo=config/, { timeout: 10_000 });
   await sleep(600);
   await shot('07-cambiar-servidor');
   assert.equal(await A.locator('#campo').inputValue(), 'http://10.0.2.2:3000');
-  await A.getByRole('button', { name: 'Volver' }).click();
+  await tocar(A.getByRole('button', { name: 'Volver' }));
   await A.waitForURL(/10\.0\.2\.2:3000/, { timeout: 60_000 });
   await waitIn(A, () => window.__rinconcito?.S.ready && window.__rinconcito.S.you === 'p1', null, { timeout: 30_000 });
   ok('la pantalla de servidor muestra la dirección guardada y "Volver" regresa a la isla como Lau');
