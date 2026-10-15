@@ -339,8 +339,13 @@ body.ouch::after { content: ""; position: fixed; inset: 0; z-index: 3; pointer-e
   .action { width: 82px; height: 82px; }
   .action .act-ico { width: 36px; height: 36px; }
   .hearts img { width: 18px; height: 18px; }
-  .title { justify-content: center; flex-direction: row; flex-wrap: wrap; }
-  .title-scene { width: min(46vw, 420px); }
+  .title { justify-content: center; align-items: center; flex-direction: row; flex-wrap: nowrap; }
+  .screen.title > :first-child, .screen.title > :last-child { margin: auto 0; }
+  .title-scene { width: min(40vw, 420px); }
+  .title-card { width: min(54vw, 420px); padding: 10px 14px; }
+  .title-card .stack { gap: 8px; margin: 8px 0 4px; }
+  .title-card .btn.big { min-height: 46px; font-size: 16px; }
+  .logo .logo-big { font-size: 32px; }
   #toasts { top: calc(var(--safe-t) + 60px); }
   .decor-bar { bottom: calc(var(--safe-b) + 10px); left: auto; right: calc(var(--safe-r) + 120px); transform: none; width: min(360px, 50vw); }
   .popover.hand-pop { bottom: 92px; }

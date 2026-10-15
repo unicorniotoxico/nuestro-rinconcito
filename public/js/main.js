@@ -117,6 +117,8 @@ function showTitle(error = null, badToken = false) {
     h('button', { type: 'button', class: 'btn big', onclick: () => joinFlow(invited || '') }, 'Tengo un código'),
     h('button', { type: 'button', class: 'btn ghost', onclick: () => keyFlow() }, 'Entrar con mi llave'),
   );
+  const standalone = window.matchMedia?.('(display-mode: standalone)').matches || navigator.standalone;
+  if (standalone && !token) buttons.push(h('p', { class: 'hint', text: '¿Ya jugabas desde el navegador? En iPhone la app instalada no ve esos datos: copiá tu llave allá (Menú → Isla → Tu llave personal) y tocá “Entrar con mi llave”.' }));
   if (badToken && token) buttons.push(h('button', { type: 'button', class: 'btn ghost', onclick: () => { localStorage.removeItem(TOKEN_KEY); showTitle(); } }, 'Olvidar la llave guardada'));
   screens.append(h('div', { class: 'screen title' },
     h('div', { class: 'title-art' }, titleScene()),

@@ -1,0 +1,36 @@
+name: Pruebas
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  servidor:
+    name: Servidor, mundo, guardado y seguridad
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm ci
+      - run: npm test
+
+  dos-celulares:
+    name: Recorrido E2E con dos navegadores
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:e2e
+        env:
+          SHOTS: capturas
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: capturas-e2e
+          path: capturas

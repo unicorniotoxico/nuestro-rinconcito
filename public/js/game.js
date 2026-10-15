@@ -326,6 +326,17 @@ export class Game {
   onFx(f) {
     const mine = f.by === S.you || f.p === S.you;
     const obj = f.o ? S.objects.get(f.o) : null;
+    // la otra persona también "mueve la herramienta" en tu pantalla
+    const who = f.by || f.p;
+    if (who && who !== S.you && S.players[who]) {
+      const toolFor = { hit: obj && (obj.kind === 'arbol' ? 'hacha' : obj.kind.startsWith('roca') ? 'pico' : null), gather: obj && (obj.kind === 'arbol' ? 'hacha' : obj.kind.startsWith('roca') ? 'pico' : null), till: 'azada', water: 'regadera', cast: 'cana' }[f.k];
+      if (toolFor) {
+        const p = S.players[who];
+        p.swing = { tool: toolFor, at: this.net.now() };
+        const tx = obj ? obj.x + 0.5 : f.x != null ? f.x + 0.5 : null, ty = obj ? obj.y + 0.5 : f.y != null ? f.y + 0.5 : null;
+        if (tx != null) { const dx = tx - p.rx, dy = ty - (p.ry - 0.3); p.dir = Math.abs(dx) > Math.abs(dy) ? (dx > 0 ? 'right' : 'left') : (dy > 0 ? 'down' : 'up'); }
+      }
+    }
     switch (f.k) {
       case 'hit': if (obj) { this.r.shake(obj.id); this.r.burst(obj.x + 0.5, obj.y + 0.3, obj.kind === 'arbol' ? 'leaf' : 'rock', 4); if (!mine) audio.play(obj.kind === 'arbol' ? 'chop' : 'mine'); } break;
       case 'gather':
