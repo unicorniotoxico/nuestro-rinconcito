@@ -62,6 +62,7 @@ export class UI {
     );
     this.sheet = document.getElementById('sheet');
     this.toasts = document.getElementById('toasts');
+    document.getElementById('touch').addEventListener('pointerdown', () => { this.emotes.hidden = true; this.handPop.hidden = true; });
   }
 
   wireState() {
@@ -130,6 +131,15 @@ export class UI {
         h('button', { type: 'button', class: 'cell', onclick: () => { this.game.hand = null; this.renderHand(); this.handPop.hidden = true; } }, h('span', { class: 'hand-empty', text: 'Nada' })),
         items.map(k => h('button', { type: 'button', class: 'cell' + (this.game.hand === k ? ' on' : ''), 'aria-label': D.ITEMS[k].name, onclick: () => { this.game.hand = k; this.renderHand(); this.handPop.hidden = true; } }, icon(k), h('span', { class: 'badge', text: S.me.inv[k] })))),
     );
+    // atajo para comer sin abrir la mochila (útil en la cueva)
+    const food = Object.keys(S.me.inv).filter(k => D.ITEMS[k]?.heal).sort((a, b) => D.ITEMS[a].heal - D.ITEMS[b].heal);
+    if (food.length && S.me.hp < D.MAX_HP) {
+      this.handPop.append(h('p', { class: 'pop-title', text: 'Comer algo' }), h('div', { class: 'row' }, food.slice(0, 4).map(k => h('button', { type: 'button', class: 'btn tiny', onclick: async () => {
+        const r = await this.net.act('eat', { item: k });
+        if (!r.ok) this.toast(r.err, 'warn');
+        this.handPop.hidden = true;
+      } }, icon(k, 'ico sm'), `+${D.ITEMS[k].heal / 2}♥`))));
+    }
     this.handPop.hidden = false;
     this.emotes.hidden = true;
   }
@@ -152,6 +162,7 @@ export class UI {
   tickHud() {
     if (!S.ready) return;
     this.renderPlace();
+    if (S.local.map === 'isla') audio.setMood(dayInfo(this.net.now()).night ? 'noche' : 'isla');
     this.renderBanner();
     if (partner() && !partner().online) this.renderPartner();
     if (this.sheet && !this.sheet.hidden && this.tab === 'desafios') this.refreshSheet();
@@ -159,6 +170,9 @@ export class UI {
 
   toast(msg, kind = 'info') {
     if (!msg) return;
+    const now = performance.now();
+    if (this.lastToast && this.lastToast.msg === msg && now - this.lastToast.at < 1800) return; // sin repetir el mismo aviso
+    this.lastToast = { msg, at: now };
     const el = h('div', { class: 'toast ' + kind, role: 'status' }, msg);
     this.toasts.append(el);
     while (this.toasts.children.length > 3) this.toasts.firstChild.remove();

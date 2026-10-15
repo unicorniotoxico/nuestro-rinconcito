@@ -39,6 +39,11 @@ document.addEventListener('dblclick', (e) => e.preventDefault());
 // ---------------------------------------------------------------- conexión
 net.onStatus = (s) => {
   ui.setOffline(s);
+  const lc = document.querySelector('.loading p');
+  if (lc && !S.ready && s === 'offline') {
+    lc.textContent = 'No hay conexión con el servidor. Sigo intentando…';
+    if (!document.querySelector('.loading .btn')) lc.after(h('button', { type: 'button', class: 'btn ghost', onclick: () => { net.stop(); showTitle(); } }, 'Volver al inicio'));
+  }
   const el = $('offline');
   if (!el.hidden) {
     $('offline-msg').textContent = s === 'connecting' ? 'Conectando con la isla…' : 'Se perdió la conexión. Reconectando…';
@@ -46,6 +51,7 @@ net.onStatus = (s) => {
 };
 net.on('token', (m) => { try { localStorage.setItem(TOKEN_KEY, m.token); } catch { /* */ } });
 net.on('welcome', () => {
+  if (location.search.includes('codigo=')) history.replaceState(null, '', location.pathname);
   clear($('screens'));
   $('hud').hidden = false;
   $('touch').hidden = false;

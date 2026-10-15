@@ -26,7 +26,7 @@ const BASE = `http://localhost:${PORT}/`;
 const browser = await chromium.launch();
 
 async function phone(tag, device) {
-  const ctx = await browser.newContext({ ...devices[device], serviceWorkers: process.env.SW === '1' ? 'allow' : 'block' });
+  const ctx = await browser.newContext({ ...devices[device], serviceWorkers: process.env.SW === '0' ? 'block' : 'allow' });
   const page = await ctx.newPage();
   page.on('crash', () => console.log(`  ✖ [${tag}] la pestaña se colgó (crash)`));
   page.on('close', () => console.log(`  · [${tag}] pestaña cerrada`));
@@ -67,6 +67,13 @@ try {
   assert.match(code, /^[A-Z2-9]{8}$/);
   await A.page.waitForSelector('.code-big');
   await shot(A.page, '04-codigo-invitacion');
+  if (process.env.SW !== '0') {
+    await waitIn(A.page, async () => !!(await navigator.serviceWorker.getRegistration()), null, { timeout: 10000 });
+    const mf = await ev(A.page, async () => { const r = await fetch(document.querySelector('link[rel=manifest]').href); return r.json(); });
+    assert.equal(mf.display, 'standalone');
+    assert.ok(mf.icons.some(i => i.sizes === '512x512' && i.purpose === 'maskable'));
+    ok('PWA: service worker registrado y manifest instalable (standalone, íconos 192/512/maskable)');
+  }
   await A.page.getByRole('button', { name: 'Cerrar' }).click();
   ok(`isla creada, código ${code}`);
 
