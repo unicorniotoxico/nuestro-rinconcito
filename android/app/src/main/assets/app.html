@@ -42,6 +42,7 @@
   .direccion { font-family: ui-monospace, monospace; font-size: 13px; word-break: break-all; color: var(--soft); }
   [hidden] { display: none !important; }
   .version { margin-top: 12px; font-size: 12px; color: var(--soft); }
+  a { color: #c25478; font-weight: 800; }
 </style>
 </head>
 <body>
@@ -82,7 +83,9 @@
   function ir(url) { location.href = url; }
   var app = window.RinconcitoApp || null;   // puente con la app (si no está, se usan enlaces rinconcito://)
   function pedir(accion, a, b) {
-    if (app && app[accion]) { app[accion](a, b); return; }
+    // ojo: los métodos de la app se buscan por cantidad de argumentos
+    if (app && accion === 'guardar' && app.guardar) { app.guardar(a, b || ''); return; }
+    if (app && accion !== 'guardar' && app[accion]) { app[accion](); return; }
     if (accion === 'guardar') ir('rinconcito://guardar?servidor=' + encodeURIComponent(a) + (b ? '&abrir=' + encodeURIComponent(b) : ''));
     else ir('rinconcito://' + accion);
   }
