@@ -16,7 +16,7 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 const ok = (m) => console.log('  ✔', m);
 const step = (m) => console.log('\n▶', m);
 
-const [device] = await android.devices({ omitDriverInstall: true });
+let [device] = await android.devices({ omitDriverInstall: true });
 assert.ok(device, 'no hay ningún dispositivo Android conectado');
 console.log('Dispositivo:', device.model(), device.serial());
 const shell = async (cmd) => (await device.shell(cmd)).toString();
@@ -27,8 +27,22 @@ const shot = async (n, limpiar = true) => { if (limpiar) { await limpiarAvisos()
 const tocar = (loc) => loc.click({ noWaitAfter: true });
 const abrirApp = () => shell(`am start -W -n ${PKG}/.MainActivity`);
 
+// Busca la vista web de la app para manejarla. A veces el emulador tarda en
+// publicarla: si pasa, se reconecta al dispositivo y se vuelve a abrir la app.
 async function paginaDelJuego() {
-  const wv = await device.webView({ pkg: PKG }, { timeout: 60_000 });
+  let wv = null;
+  for (let intento = 1; !wv; intento++) {
+    try { wv = await device.webView({ pkg: PKG }, { timeout: 40_000 }); }
+    catch (e) {
+      if (intento >= 3) throw e;
+      console.log(`   (no aparece la vista web, reintento ${intento})`);
+      try { device.close(); } catch { /* */ }
+      [device] = await android.devices({ omitDriverInstall: true });
+      await shell(`am force-stop ${PKG}`);
+      await abrirApp();
+      await sleep(2000);
+    }
+  }
   const page = await wv.page();
   page.on('pageerror', (e) => console.log('  ✖ [APK] error de página:', e.message));
   page.on('console', (m) => { if (m.type() === 'error') console.log('  · [APK] consola:', m.text()); });
