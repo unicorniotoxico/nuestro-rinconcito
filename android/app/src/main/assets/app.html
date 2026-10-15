@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover, user-scalable=no">
+<title>Rinconcito</title>
+<style>
+  :root { --ink: #4a3640; --soft: #7a6470; --paper: #fff8ee; --pink: #f29bb0; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; }
+  body {
+    font-family: ui-rounded, "Nunito", system-ui, -apple-system, Roboto, sans-serif; color: var(--ink);
+    background: radial-gradient(circle at 50% 0%, #ffe9c9 0%, #f8c6b5 45%, #d9b3d8 100%);
+    display: flex; align-items: center; justify-content: center; padding: 18px; overflow-y: auto;
+    -webkit-tap-highlight-color: transparent; user-select: none;
+  }
+  .card { width: min(420px, 100%); background: var(--paper); border: 3px solid var(--ink); border-radius: 16px; box-shadow: 0 4px 0 var(--ink); padding: 18px; text-align: center; }
+  .logo { margin: 4px 0 10px; }
+  .logo small { display: block; font-size: 18px; font-weight: 900; color: var(--soft); }
+  .logo b { display: block; font-size: 40px; line-height: 1.05; color: #fff8ee; -webkit-text-stroke: 2px var(--ink); text-shadow: 0 4px 0 var(--ink), 0 6px 0 #d76f8b; }
+  img.icono { width: 96px; height: 96px; image-rendering: pixelated; border-radius: 22px; border: 3px solid var(--ink); box-shadow: 0 4px 0 var(--ink); }
+  p { margin: 10px 0; font-size: 16px; line-height: 1.35; }
+  .suave { color: var(--soft); font-size: 14px; }
+  .err { color: #b8434f; font-weight: 700; }
+  .err:empty { display: none; }
+  input {
+    width: 100%; font: inherit; font-size: 16px; padding: 12px; border: 3px solid var(--ink); border-radius: 10px;
+    background: #fffdf8; color: var(--ink); outline: none; user-select: text;
+  }
+  input:focus { border-color: #d76f8b; box-shadow: 0 0 0 3px #f7bccb; }
+  .btn {
+    display: flex; align-items: center; justify-content: center; width: 100%; min-height: 52px; margin-top: 10px;
+    font: inherit; font-size: 17px; font-weight: 800; color: var(--ink); text-decoration: none;
+    background: #fff1e0; border: 3px solid var(--ink); border-radius: 12px; box-shadow: 0 3px 0 var(--ink);
+  }
+  .btn:active { transform: translateY(2px); box-shadow: 0 1px 0 var(--ink); }
+  .btn.primario { background: var(--pink); }
+  .btn.chico { min-height: 42px; font-size: 15px; background: #f7ead9; }
+  .btn:disabled { opacity: .55; }
+  .spinner { width: 44px; height: 44px; margin: 14px auto 6px; border-radius: 50%; border: 5px solid #f3d6dd; border-top-color: #d76f8b; animation: gira .9s linear infinite; }
+  @keyframes gira { to { transform: rotate(360deg); } }
+  .direccion { font-family: ui-monospace, monospace; font-size: 13px; word-break: break-all; color: var(--soft); }
+  [hidden] { display: none !important; }
+  .version { margin-top: 12px; font-size: 12px; color: var(--soft); }
+</style>
+</head>
+<body>
+  <div class="card">
+    <img class="icono" src="icono.png" alt="">
+    <div class="logo"><small>Nuestro</small><b>rinconcito</b></div>
+
+    <!-- Conectando -->
+    <section id="inicio" hidden>
+      <div class="spinner" id="spin"></div>
+      <p id="estado">Entrando a la isla…</p>
+      <p class="err" id="inicio-err"></p>
+      <p class="direccion" id="inicio-dir"></p>
+      <button class="btn primario" id="reintentar" hidden>Reintentar</button>
+      <button class="btn chico" id="ir-config">Cambiar servidor</button>
+    </section>
+
+    <!-- Configurar servidor -->
+    <section id="config" hidden>
+      <p>Pegá la <b>dirección del servidor</b> de su isla o el <b>enlace de invitación</b> que te mandaron.</p>
+      <input id="campo" type="url" inputmode="url" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="https://nuestro-rinconcito.onrender.com">
+      <p class="err" id="config-err"></p>
+      <button class="btn primario" id="conectar">Conectar</button>
+      <button class="btn chico" id="guardar-igual" hidden>Guardar igual</button>
+      <button class="btn chico" id="volver" hidden>Volver</button>
+      <p class="suave">¿Todavía no tienen servidor? Se arma gratis en unos minutos: <a href="https://github.com/unicorniotoxico/nuestro-rinconcito#opción-a--gratis-y-todo-desde-el-celular-render--supabase">ver la guía</a>.</p>
+    </section>
+
+    <div class="version" id="version"></div>
+  </div>
+
+<script>
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var intento = 0, timer = null, inicioT = 0;
+
+  function params() { return new URLSearchParams(location.hash.slice(1)); }
+  function ir(url) { location.href = url; }
+
+  // Acepta "mi-isla.onrender.com", "https://mi-isla.onrender.com/", o un enlace con ?codigo=
+  function interpretar(texto) {
+    texto = (texto || '').trim();
+    var m = texto.match(/https?:\/\/\S+/i);
+    if (m) texto = m[0];
+    if (!/^https?:\/\//i.test(texto)) texto = 'https://' + texto;
+    try {
+      var u = new URL(texto);
+      if (!u.hostname || u.hostname.indexOf('.') < 0 && u.hostname !== 'localhost') return null;
+      var abrir = u.searchParams.get('codigo') ? u.origin + '/?codigo=' + encodeURIComponent(u.searchParams.get('codigo')) : null;
+      return { origen: u.origin, abrir: abrir };
+    } catch (e) { return null; }
+  }
+
+  function probar(origen, ms) {
+    var ctrl = new AbortController();
+    var t = setTimeout(function () { ctrl.abort(); }, ms);
+    return fetch(origen + '/healthz', { cache: 'no-store', signal: ctrl.signal })
+      .then(function (r) { return r.ok ? r.text() : ''; })
+      .then(function (txt) { clearTimeout(t); return txt.trim() === 'ok'; })
+      .catch(function () { clearTimeout(t); return false; });
+  }
+
+  function guardar(origen, abrir) {
+    ir('rinconcito://guardar?servidor=' + encodeURIComponent(origen) + (abrir ? '&abrir=' + encodeURIComponent(abrir) : ''));
+  }
+
+  // ------------------------------------------------------------ conectando
+  function modoInicio(p) {
+    var servidor = p.get('servidor'), abrir = p.get('abrir'), error = p.get('error');
+    $('inicio').hidden = false; $('config').hidden = true;
+    $('inicio-dir').textContent = servidor;
+    $('inicio-err').textContent = error || '';
+    $('reintentar').hidden = true;
+    $('spin').hidden = false;
+    clearTimeout(timer);
+    intento = 0; inicioT = Date.now();
+    var destino = abrir || (servidor + '/');
+    function paso() {
+      if (!navigator.onLine) {
+        $('estado').textContent = 'No hay internet. Conectate a una red y vuelvo a intentar solo.';
+        timer = setTimeout(paso, 3000);
+        return;
+      }
+      intento++;
+      var seg = Math.round((Date.now() - inicioT) / 1000);
+      $('estado').textContent = seg < 5 ? 'Entrando a la isla…' : 'Despertando el servidor… (si estuvo dormido puede tardar hasta un minuto)';
+      probar(servidor, 12000).then(function (ok) {
+        if (ok) { $('estado').textContent = '¡Listo!'; ir(destino); return; }
+        if (Date.now() - inicioT > 150000) {
+          $('spin').hidden = true;
+          $('estado').textContent = 'El servidor no responde.';
+          $('inicio-err').textContent = 'Revisá que esté publicado y que la dirección sea correcta.';
+          $('reintentar').hidden = false;
+          return;
+        }
+        timer = setTimeout(paso, Math.min(5000, 1200 + intento * 600));
+      });
+    }
+    if (error) { // venimos de un error al abrir el juego: esperamos un poco antes de reintentar
+      $('spin').hidden = true;
+      $('estado').textContent = 'Se cortó la conexión con la isla.';
+      $('reintentar').hidden = false;
+      timer = setTimeout(function () { $('spin').hidden = false; $('reintentar').hidden = true; $('inicio-err').textContent = ''; paso(); }, 4000);
+    } else paso();
+    $('reintentar').onclick = function () { location.hash = 'modo=inicio&servidor=' + encodeURIComponent(servidor) + (abrir ? '&abrir=' + encodeURIComponent(abrir) : '') + '&n=' + Date.now(); };
+    $('ir-config').onclick = function () { clearTimeout(timer); ir('rinconcito://config'); };
+  }
+
+  // ------------------------------------------------------------ configurar
+  function modoConfig(p) {
+    clearTimeout(timer);
+    var actual = p.get('servidor') || '';
+    $('inicio').hidden = true; $('config').hidden = false;
+    $('campo').value = actual;
+    $('config-err').textContent = p.get('error') || '';
+    $('volver').hidden = !actual;
+    $('guardar-igual').hidden = true;
+    var pendiente = null;
+    $('conectar').onclick = function () {
+      var r = interpretar($('campo').value);
+      if (!r) { $('config-err').textContent = 'Esa dirección no parece válida. Tiene que ser algo como https://mi-isla.onrender.com'; return; }
+      $('conectar').disabled = true;
+      $('conectar').textContent = 'Probando… (puede tardar si el servidor dormía)';
+      $('config-err').textContent = '';
+      probar(r.origen, 70000).then(function (ok) {
+        $('conectar').disabled = false;
+        $('conectar').textContent = 'Conectar';
+        if (ok) { guardar(r.origen, r.abrir); return; }
+        pendiente = r;
+        $('config-err').textContent = 'No respondió como un servidor de Rinconcito. ¿Está bien escrita? Si recién lo publicaste, esperá un minuto y probá de nuevo.';
+        $('guardar-igual').hidden = false;
+      });
+    };
+    $('guardar-igual').onclick = function () { if (pendiente) guardar(pendiente.origen, pendiente.abrir); };
+    $('volver').onclick = function () { ir('rinconcito://inicio'); };
+    $('campo').onkeydown = function (e) { if (e.key === 'Enter') $('conectar').click(); };
+    if (!actual) setTimeout(function () { $('campo').focus(); }, 300);
+  }
+
+  function render() {
+    var p = params();
+    $('version').textContent = p.get('version') ? 'Versión ' + p.get('version') : '';
+    if (p.get('modo') === 'config') modoConfig(p); else modoInicio(p);
+  }
+  window.addEventListener('hashchange', render);
+  window.addEventListener('online', function () { if (params().get('modo') !== 'config') render(); });
+  render();
+})();
+</script>
+</body>
+</html>

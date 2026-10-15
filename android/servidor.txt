@@ -1,0 +1,2 @@
+# Dirección del servidor que la app abre por defecto (por ejemplo https://nuestro-rinconcito.onrender.com).
+# Si la dejás vacía, la app la pregunta la primera vez. Se puede cambiar después desde la app.

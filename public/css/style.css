@@ -33,8 +33,8 @@ img.ico { width: 32px; height: 32px; image-rendering: pixelated; pointer-events:
 img.ico.sm { width: 20px; height: 20px; }
 img.ico.big { width: 48px; height: 48px; }
 img.ico.huge { width: 112px; height: 90px; display: block; margin: 6px auto; object-fit: contain; }
-canvas#world { position: fixed; inset: 0; image-rendering: pixelated; image-rendering: crisp-edges; z-index: 0; }
-#touch { position: fixed; inset: 0; z-index: 1; touch-action: none; }
+canvas#world { position: fixed; top: 0; right: 0; bottom: 0; left: 0; image-rendering: pixelated; image-rendering: crisp-edges; z-index: 0; }
+#touch { position: fixed; top: 0; right: 0; bottom: 0; left: 0; z-index: 1; touch-action: none; }
 
 /* ---------- joystick ---------- */
 #stick {
@@ -108,7 +108,7 @@ h4 { margin: 16px 0 8px; font-size: 15px; text-transform: uppercase; letter-spac
 p { margin: 6px 0; }
 
 /* ---------- HUD ---------- */
-#hud { position: fixed; inset: 0; z-index: 2; pointer-events: none; }
+#hud { position: fixed; top: 0; right: 0; bottom: 0; left: 0; z-index: 2; pointer-events: none; }
 #hud > * { pointer-events: none; }
 #hud button, #hud .popover, #hud .decor-bar, #hud .ch-banner { pointer-events: auto; }
 .hud-top {
@@ -188,7 +188,7 @@ p { margin: 6px 0; }
 
 /* ---------- menú (hoja) ---------- */
 .sheet {
-  position: fixed; z-index: 5; inset: 0; display: flex; flex-direction: column;
+  position: fixed; z-index: 5; top: 0; right: 0; bottom: 0; left: 0; display: flex; flex-direction: column;
   background: var(--paper-2); padding: calc(var(--safe-t) + 6px) calc(var(--safe-r) + 8px) var(--safe-b) calc(var(--safe-l) + 8px);
 }
 .sheet-head { display: flex; gap: 8px; align-items: center; padding: 6px 0 8px; border-bottom: 3px solid var(--ink); }
@@ -237,7 +237,7 @@ input[type=range] { width: 100%; accent-color: #d76f8b; height: 30px; }
 
 /* ---------- modales ---------- */
 .modal-wrap {
-  position: fixed; inset: 0; z-index: 7; display: flex; align-items: center; justify-content: center;
+  position: fixed; top: 0; right: 0; bottom: 0; left: 0; z-index: 7; display: flex; align-items: center; justify-content: center;
   background: rgba(40, 25, 35, .45); padding: calc(var(--safe-t) + 10px) 10px calc(var(--safe-b) + 10px);
   animation: fade .15s;
 }
@@ -254,7 +254,7 @@ input[type=range] { width: 100%; accent-color: #d76f8b; height: 30px; }
 .score.win { background: #fff3c8; }
 
 /* ---------- pesca ---------- */
-.fishing { position: fixed; inset: 0; z-index: 7; display: flex; align-items: flex-end; justify-content: center; padding: 0 10px calc(var(--safe-b) + 16px); background: linear-gradient(transparent 45%, rgba(40, 25, 35, .35)); }
+.fishing { position: fixed; top: 0; right: 0; bottom: 0; left: 0; z-index: 7; display: flex; align-items: flex-end; justify-content: center; padding: 0 10px calc(var(--safe-b) + 16px); background: linear-gradient(transparent 45%, rgba(40, 25, 35, .35)); }
 .f-card { width: min(96vw, 520px); }
 .f-msg { min-height: 44px; display: flex; align-items: center; gap: 6px; font-weight: 700; }
 .f-track {
@@ -264,7 +264,7 @@ input[type=range] { width: 100%; accent-color: #d76f8b; height: 30px; }
 .f-zone { position: absolute; top: 0; bottom: 0; background: rgba(124, 224, 138, .85); border-left: 2px solid #3e8f52; border-right: 2px solid #3e8f52; }
 .f-marker { position: absolute; top: 50%; transform: translate(-50%, -50%); filter: drop-shadow(0 2px 0 rgba(0,0,0,.25)); }
 .f-marker img { width: 40px; height: 40px; }
-.f-track::after { content: ""; position: absolute; inset: -6px; border: 3px solid var(--rar); border-radius: 16px; pointer-events: none; }
+.f-track::after { content: ""; position: absolute; top: -6px; right: -6px; bottom: -6px; left: -6px; border: 3px solid var(--rar); border-radius: 16px; pointer-events: none; }
 .f-pips { display: flex; gap: 6px; align-items: center; justify-content: center; margin: 4px 0; }
 .pip { width: 18px; height: 18px; border-radius: 50%; border: 3px solid var(--ink); background: #fff; }
 .pip.hit { background: #6fd08a; }
@@ -283,7 +283,7 @@ input[type=range] { width: 100%; accent-color: #d76f8b; height: 30px; }
 /* ---------- pantallas (inicio, crear) ---------- */
 #screens { position: relative; z-index: 6; }
 .screen {
-  position: fixed; inset: 0; overflow-y: auto; touch-action: pan-y;
+  position: fixed; top: 0; right: 0; bottom: 0; left: 0; overflow-y: auto; touch-action: pan-y;
   display: flex; flex-direction: column; align-items: center; justify-content: flex-start; gap: 14px;
   padding: calc(var(--safe-t) + 16px) calc(var(--safe-r) + 14px) calc(var(--safe-b) + 16px) calc(var(--safe-l) + 14px);
   background: radial-gradient(circle at 50% 0%, #ffe9c9 0%, #f8c6b5 45%, #d9b3d8 100%);
@@ -315,12 +315,12 @@ input[type=range] { width: 100%; accent-color: #d76f8b; height: 30px; }
 
 /* ---------- sin conexión ---------- */
 #offline {
-  position: fixed; inset: 0; z-index: 9; display: flex; align-items: center; justify-content: center; padding: 16px;
+  position: fixed; top: 0; right: 0; bottom: 0; left: 0; z-index: 9; display: flex; align-items: center; justify-content: center; padding: 16px;
   background: rgba(30, 20, 30, .55); backdrop-filter: blur(2px);
 }
 #offline .card { width: min(92vw, 380px); text-align: center; }
-.noscript { position: fixed; inset: 0; z-index: 10; background: var(--paper); padding: 24px; font-size: 18px; }
-body.ouch::after { content: ""; position: fixed; inset: 0; z-index: 3; pointer-events: none; box-shadow: inset 0 0 80px rgba(230, 60, 90, .55); }
+.noscript { position: fixed; top: 0; right: 0; bottom: 0; left: 0; z-index: 10; background: var(--paper); padding: 24px; font-size: 18px; }
+body.ouch::after { content: ""; position: fixed; top: 0; right: 0; bottom: 0; left: 0; z-index: 3; pointer-events: none; box-shadow: inset 0 0 80px rgba(230, 60, 90, .55); }
 
 /* ---------- pantallas chicas / apaisado ---------- */
 @media (max-width: 380px) {
@@ -351,8 +351,11 @@ body.ouch::after { content: ""; position: fixed; inset: 0; z-index: 3; pointer-e
   .popover.hand-pop { bottom: 92px; }
 }
 @media (min-width: 760px) and (min-height: 560px) {
-  .sheet { inset: 5vh auto 5vh 50%; transform: translateX(-50%); width: 620px; border: 4px solid var(--ink); border-radius: 18px; box-shadow: 0 6px 0 var(--ink); padding: 10px 14px; }
+  .sheet { top: 5vh; right: auto; bottom: 5vh; left: 50%; transform: translateX(-50%); width: 620px; border: 4px solid var(--ink); border-radius: 18px; box-shadow: 0 6px 0 var(--ink); padding: 10px 14px; }
 }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }
 }
+
+/* dentro de la app de Android no hace falta explicar cómo instalar */
+.en-app .app-hide { display: none !important; }

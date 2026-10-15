@@ -400,7 +400,13 @@ export class UI {
     const mute = h('input', { type: 'checkbox', checked: audio.prefs.muted });
     mute.addEventListener('change', () => audio.set('muted', mute.checked));
     body.append(h('div', { class: 'card' }, h('h4', { text: 'Sonido' }), slider('Música', 'music'), slider('Efectos', 'sfx'), h('label', { class: 'check' }, mute, h('span', { text: 'Silenciar todo' }))));
-    const install = h('div', { class: 'card' }, h('h4', { text: 'Instalar en el celular' }));
+    if (/RinconcitoApp\//.test(navigator.userAgent)) {
+      body.append(h('div', { class: 'card' }, h('h4', { text: 'Servidor de la isla' }),
+        h('p', { class: 'small code-key', text: location.origin }),
+        h('p', { class: 'small', text: 'Tu llave queda guardada en este celular. Si cambiás de servidor, vas a empezar en otra isla.' }),
+        h('button', { type: 'button', class: 'btn ghost', onclick: () => { location.href = 'rinconcito://config'; } }, 'Cambiar servidor')));
+    }
+    const install = h('div', { class: 'card app-hide' }, h('h4', { text: 'Instalar en el celular' }));
     if (window.__installPrompt) install.append(h('button', { type: 'button', class: 'btn primary', onclick: async () => { window.__installPrompt.prompt(); window.__installPrompt = null; } }, 'Instalar app'));
     install.append(h('p', { class: 'small', text: 'iPhone: en Safari tocá Compartir → “Agregar a inicio”. Android: menú ⋮ → “Instalar app” o “Agregar a la pantalla principal”.' }),
       h('p', { class: 'small', text: 'Importante en iPhone: la app instalada no comparte datos con Safari. Copiá tu llave personal (pestaña Isla) y usala en “Entrar con mi llave” la primera vez que abras la app.' }));

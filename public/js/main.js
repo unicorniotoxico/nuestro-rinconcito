@@ -22,6 +22,29 @@ const ui = new UI(net);
 const game = new Game(net, renderer, input, ui);
 ui.setGame(game);
 window.__rinconcito = { S, net, game }; // útil para depurar y para las pruebas automáticas
+
+// ---------------------------------------------------------------- dentro de la app de Android
+export const EN_APP = /RinconcitoApp\//.test(navigator.userAgent);
+if (EN_APP) {
+  document.documentElement.classList.add('en-app');
+  // la vista web de Android no trae "compartir": lo resuelve la app con el menú del teléfono
+  if (!navigator.share) {
+    navigator.share = (d = {}) => {
+      const texto = [d.text, d.url].filter(Boolean).join(' ');
+      location.href = 'rinconcito://compartir?texto=' + encodeURIComponent(texto);
+      return Promise.resolve();
+    };
+  }
+  // botón "atrás" del teléfono: cierra lo que esté abierto; si no hay nada, la app se minimiza
+  window.__rinconcitoBack = () => {
+    if (document.querySelector('.modal-wrap')) { ui.closeAll(); return true; }
+    if (ui.fishEl) { ui.closeFishing(); return true; }
+    if (!document.getElementById('sheet').hidden) { ui.closeMenu(); return true; }
+    if (game.decor) { game.exitDecor(); return true; }
+    if (!ui.emotes.hidden || !ui.handPop.hidden) { ui.emotes.hidden = true; ui.handPop.hidden = true; return true; }
+    return false;
+  };
+}
 try { const hh = localStorage.getItem('rinconcito.hora'); if (hh !== null && hh !== '') window.__debugHora = Number(hh); } catch { /* */ }
 
 window.addEventListener('resize', () => renderer.resize());
@@ -118,7 +141,7 @@ function showTitle(error = null, badToken = false) {
     h('button', { type: 'button', class: 'btn ghost', onclick: () => keyFlow() }, 'Entrar con mi llave'),
   );
   const standalone = window.matchMedia?.('(display-mode: standalone)').matches || navigator.standalone;
-  if (standalone && !token) buttons.push(h('p', { class: 'hint', text: '¿Ya jugabas desde el navegador? En iPhone la app instalada no ve esos datos: copiá tu llave allá (Menú → Isla → Tu llave personal) y tocá “Entrar con mi llave”.' }));
+  if ((standalone || EN_APP) && !token) buttons.push(h('p', { class: 'hint', text: '¿Ya jugabas desde el navegador? Esta app guarda sus datos aparte: copiá tu llave allá (Menú → Isla → Tu llave personal) y tocá “Entrar con mi llave”.' }));
   if (badToken && token) buttons.push(h('button', { type: 'button', class: 'btn ghost', onclick: () => { localStorage.removeItem(TOKEN_KEY); showTitle(); } }, 'Olvidar la llave guardada'));
   screens.append(h('div', { class: 'screen title' },
     h('div', { class: 'title-art' }, titleScene()),

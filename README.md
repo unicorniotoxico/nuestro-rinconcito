@@ -18,7 +18,7 @@ Un juego tierno para dos: llegan a una islita y construyen su hogar juntos. Cult
 </p>
 
 - **Multijugador real**: cada uno juega desde su celular, el servidor es la autoridad y guarda todo.
-- **PWA instalable** (Android y iPhone), sin publicidad, sin compras, sin energía ni castigos por no entrar.
+- **App para Android (APK)** compilada por GitHub y **PWA instalable** (Android y iPhone), sin publicidad, sin compras, sin energía ni castigos por no entrar.
 - Arte pixel, música y sonidos **100 % originales**, generados por código en este proyecto.
 
 ---
@@ -150,6 +150,24 @@ La guía paso a paso (crear la isla, invitar, instalar como app, volver a entrar
 
 Resumen: uno toca **Crear nuestra isla** y le comparte el **código** (o el enlace) al otro, que toca **Unirme**. El código sirve una sola vez. Cada celular guarda su **llave personal**; con ella se vuelve a entrar como uno mismo (Menú → Isla → Tu llave personal).
 
+## App para Android (APK)
+
+GitHub compila la app sola en cada cambio, la prueba en un emulador de Android y la publica en **Releases**. Para instalarla, abrí este enlace **desde el celular**:
+
+**➜ [Descargar nuestro-rinconcito.apk](https://github.com/unicorniotoxico/nuestro-rinconcito/releases/latest/download/nuestro-rinconcito.apk)**
+
+1. Tocá el archivo descargado. Si Android lo pide, permití *instalar apps desconocidas* para el navegador.
+2. Abrí **Rinconcito**. La primera vez te pide la **dirección del servidor** de su isla (por ejemplo `https://nuestro-rinconcito.onrender.com`) **o el enlace de invitación** que te mandaron: pegás cualquiera de los dos y entra solo.
+3. Listo: pantalla completa, sin barras del navegador, el botón *atrás* cierra menús, *Compartir* abre WhatsApp y compañía, y si el servidor gratis estaba dormido, la app espera a que despierte.
+
+Detalles:
+
+- La app es una ventana dedicada al juego: el mundo vive en el servidor, así que **igual hace falta tener el servidor publicado** (ver arriba). En iPhone no hay APK: se usa Safari → *Agregar a inicio*.
+- Las versiones nuevas se instalan **encima** sin perder la isla ni la llave.
+- Para que la app ya venga con la dirección puesta, escribila en [`android/servidor.txt`](android/servidor.txt): la próxima compilación sale configurada.
+- **Firma**: para que GitHub pueda compilarla sin configurar nada, se firma con una llave incluida en el repo (`android/firma-publica.p12`). Como es pública, instalá el APK solo desde este repositorio. Si querés tu propia firma: creá una llave (`keytool -genkeypair -keystore propia.p12 -storetype PKCS12 -alias rinconcito ...`) y cargá en *Settings → Secrets and variables → Actions* los secretos `ANDROID_KEYSTORE_BASE64` (el archivo en base64), `ANDROID_KEYSTORE_PASSWORD`, `ANDROID_KEY_ALIAS` y `ANDROID_KEY_PASSWORD`. Al cambiar de firma hay que desinstalar la app una vez (antes, copiá tu llave personal del juego).
+- Compilarla a mano: Android SDK + JDK 17 y `cd android && gradle assembleRelease` (Gradle 8.11).
+
 ## Cómo está hecho
 
 - **Servidor**: Node.js + [`ws`](https://github.com/websockets/ws). Es la autoridad: valida cada acción (distancia, herramientas, inventario, reglas), las aplica de a una y guarda en archivos atómicos o en Supabase.
@@ -172,6 +190,7 @@ Las dos suites corren solas en **GitHub Actions** en cada cambio (las capturas d
 
 ```
 server/          servidor (index.js, hub.js, game/island.js = reglas, store/ = guardado)
+android/         app de Android (WebView a pantalla completa) y su prueba en emulador
 shared/          datos y mapas que usan servidor y cliente (recetas, cultivos, peces, mapa…)
 public/          la PWA: index.html, css/, js/ (render, sprites, ui, audio…), manifest y service worker
 test/            pruebas automáticas (node --test) y e2e/ (Playwright con dos navegadores)

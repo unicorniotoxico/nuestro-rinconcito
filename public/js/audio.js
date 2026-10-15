@@ -11,6 +11,12 @@ class Audio {
     this.step = 0;
     this.nextTime = 0;
     this.timer = null;
+    // con la pantalla apagada o la app en segundo plano, silencio total
+    document.addEventListener('visibilitychange', () => {
+      if (!this.ctx) return;
+      if (document.hidden) this.ctx.suspend().catch(() => {});
+      else this.ctx.resume().catch(() => {});
+    });
   }
 
   savePrefs() { try { localStorage.setItem(PREFS_KEY, JSON.stringify(this.prefs)); } catch { /* */ } }

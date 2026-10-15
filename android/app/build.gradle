@@ -1,0 +1,70 @@
+plugins {
+    id 'com.android.application'
+}
+
+// Servidor que la app abre por defecto. Prioridad:
+//   1) -PservidorPorDefecto=https://...   2) variable RINCONCITO_SERVIDOR   3) android/servidor.txt
+// Si queda vacío, la app pregunta la dirección la primera vez.
+def servidor = (project.findProperty('servidorPorDefecto') ?: System.getenv('RINCONCITO_SERVIDOR') ?: '').toString().trim()
+if (!servidor) {
+    def f = rootProject.file('servidor.txt')
+    if (f.exists()) servidor = f.text.readLines().find { it.trim() && !it.trim().startsWith('#') }?.trim() ?: ''
+}
+servidor = servidor.replaceAll('/+$', '')
+if (servidor && !(servidor ==~ /^https?:\/\/[A-Za-z0-9.\-]+(:[0-9]+)?$/)) {
+    throw new GradleException("Dirección de servidor inválida: '${servidor}' (tiene que ser algo como https://mi-isla.onrender.com)")
+}
+
+def numero = (System.getenv('GITHUB_RUN_NUMBER') ?: '1').toInteger()
+
+android {
+    namespace 'io.github.unicorniotoxico.rinconcito'
+    compileSdk 35
+
+    defaultConfig {
+        applicationId 'io.github.unicorniotoxico.rinconcito'
+        minSdk 24
+        targetSdk 35
+        versionCode numero
+        versionName "1.0.${numero}"
+        buildConfigField 'String', 'SERVIDOR_POR_DEFECTO', "\"${servidor}\""
+    }
+
+    buildFeatures {
+        buildConfig true
+    }
+
+    // Firma: si existen las variables ANDROID_KEYSTORE_* (secretos del repo) se usa esa
+    // llave; si no, la "firma pública" incluida en el repo, para que las actualizaciones
+    // se instalen encima sin perder los datos. Ver README.
+    signingConfigs {
+        rinconcito {
+            def propia = System.getenv('ANDROID_KEYSTORE_FILE')
+            storeFile file(propia ?: "${rootDir}/firma-publica.p12")
+            storePassword System.getenv('ANDROID_KEYSTORE_PASSWORD') ?: 'rinconcito-publica'
+            keyAlias System.getenv('ANDROID_KEY_ALIAS') ?: 'rinconcito'
+            keyPassword System.getenv('ANDROID_KEY_PASSWORD') ?: System.getenv('ANDROID_KEYSTORE_PASSWORD') ?: 'rinconcito-publica'
+            storeType System.getenv('ANDROID_KEYSTORE_TYPE') ?: 'pkcs12'
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            signingConfig signingConfigs.rinconcito
+        }
+        debug {
+            signingConfig signingConfigs.rinconcito
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    lint {
+        abortOnError false
+        checkReleaseBuilds false
+    }
+}

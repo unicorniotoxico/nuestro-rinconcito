@@ -4,3 +4,8 @@ data/
 *.log
 test-results/
 .DS_Store
+android/.gradle/
+android/build/
+android/app/build/
+android/local.properties
+capturas-android/

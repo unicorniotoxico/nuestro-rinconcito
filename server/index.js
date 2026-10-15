@@ -51,7 +51,8 @@ const SECURITY_HEADERS = {
 function serveStatic(req, res) {
   const url = new URL(req.url, 'http://x');
   let rel = decodeURIComponent(url.pathname);
-  if (rel === '/healthz') { res.writeHead(200, { 'Content-Type': 'text/plain' }); return res.end('ok'); }
+  // /healthz lo consulta la app de Android para saber si el servidor ya "despertó" (CORS abierto: no tiene datos)
+  if (rel === '/healthz') { res.writeHead(200, { 'Content-Type': 'text/plain', 'Cache-Control': 'no-store', 'Access-Control-Allow-Origin': '*' }); return res.end('ok'); }
   let base = path.join(ROOT, 'public');
   if (rel.startsWith('/shared/')) { base = path.join(ROOT, 'shared'); rel = rel.slice('/shared'.length); }
   if (rel === '/' || rel === '') rel = '/index.html';

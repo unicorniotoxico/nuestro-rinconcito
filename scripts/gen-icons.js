@@ -72,7 +72,8 @@ function png(w, h, rgba) {
 }
 
 // size: lado del PNG · artScale: tamaño del dibujo (fracción) · round: esquinas redondeadas
-function render(size, artFrac, round) {
+// transparent: sin fondo (capa frontal de los íconos adaptativos de Android)
+function render(size, artFrac, round, transparent = false) {
   const buf = Buffer.alloc(size * size * 4);
   const bgTop = [255, 233, 201], bgBot = [242, 167, 176];
   const r = round ? size * 0.22 : 0;
@@ -83,7 +84,7 @@ function render(size, artFrac, round) {
       inside = (x - cx) ** 2 + (y - cy) ** 2 <= r * r;
     }
     const i = (y * size + x) * 4, t = y / size;
-    if (!inside) { buf[i + 3] = 0; continue; }
+    if (!inside || transparent) { buf[i + 3] = 0; continue; }
     buf[i] = Math.round(bgTop[0] + (bgBot[0] - bgTop[0]) * t);
     buf[i + 1] = Math.round(bgTop[1] + (bgBot[1] - bgTop[1]) * t);
     buf[i + 2] = Math.round(bgTop[2] + (bgBot[2] - bgTop[2]) * t);
@@ -110,3 +111,19 @@ fs.writeFileSync(path.join(OUT, 'icon-512.png'), render(512, 0.86, true));
 fs.writeFileSync(path.join(OUT, 'maskable-512.png'), render(512, 0.66, false));
 fs.writeFileSync(path.join(OUT, 'apple-touch-icon.png'), render(180, 0.8, false));
 console.log('Íconos generados en', OUT);
+
+// Íconos de la app de Android
+const RES = path.resolve(OUT, '../../android/app/src/main/res');
+if (fs.existsSync(RES)) {
+  const dens = { mdpi: 1, hdpi: 1.5, xhdpi: 2, xxhdpi: 3, xxxhdpi: 4 };
+  for (const [d, k] of Object.entries(dens)) {
+    const dir = path.join(RES, 'mipmap-' + d);
+    fs.mkdirSync(dir, { recursive: true });
+    fs.writeFileSync(path.join(dir, 'ic_launcher.png'), render(Math.round(48 * k), 0.86, true));
+    fs.writeFileSync(path.join(dir, 'ic_launcher_foreground.png'), render(Math.round(108 * k), 0.6, false, true));
+  }
+  const assets = path.resolve(RES, '../assets');
+  fs.mkdirSync(assets, { recursive: true });
+  fs.writeFileSync(path.join(assets, 'icono.png'), render(192, 0.86, true));
+  console.log('Íconos de Android generados en', RES);
+}
