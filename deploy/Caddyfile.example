@@ -1,0 +1,11 @@
+# Caddy pone HTTPS automático (Let's Encrypt) delante del juego.
+# Reemplazá el dominio por el tuyo (por ejemplo, uno gratis de DuckDNS).
+# Instalación en Ubuntu/Debian: https://caddyserver.com/docs/install
+#
+#   sudo cp deploy/Caddyfile.example /etc/caddy/Caddyfile
+#   sudo systemctl reload caddy
+
+rinconcito.duckdns.org {
+	encode gzip
+	reverse_proxy 127.0.0.1:3000
+}

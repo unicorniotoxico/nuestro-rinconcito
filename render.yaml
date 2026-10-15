@@ -1,0 +1,24 @@
+# Despliegue en Render (https://render.com) con el botón "Deploy to Render".
+# El plan gratis no tiene disco persistente: por eso se guarda en Supabase.
+# Si usás un plan pago con disco, podés cambiar STORAGE a "file" y montar un disco en /data.
+services:
+  - type: web
+    name: nuestro-rinconcito
+    runtime: node
+    plan: free
+    buildCommand: npm ci --omit=dev || npm install --omit=dev
+    startCommand: node server/index.js
+    healthCheckPath: /healthz
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
+      - key: STORAGE
+        value: supabase
+      - key: TRUST_PROXY
+        value: "1"
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_SERVICE_KEY
+        sync: false
+      - key: SUPABASE_TABLE
+        value: islands

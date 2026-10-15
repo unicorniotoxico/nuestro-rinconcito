@@ -1,0 +1,30 @@
+# Servicio de systemd para dejar el juego corriendo en un servidor Linux
+# (por ejemplo una VM gratis de Oracle Cloud). Ajustá las rutas y el usuario.
+#
+#   sudo cp deploy/rinconcito.service /etc/systemd/system/
+#   sudo systemctl daemon-reload
+#   sudo systemctl enable --now rinconcito
+#   journalctl -u rinconcito -f        # ver el registro
+
+[Unit]
+Description=Nuestro rinconcito (servidor del juego)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+User=ubuntu
+WorkingDirectory=/home/ubuntu/nuestro-rinconcito
+Environment=NODE_ENV=production
+Environment=PORT=3000
+Environment=HOST=127.0.0.1
+Environment=DATA_DIR=/home/ubuntu/rinconcito-data
+Environment=TRUST_PROXY=1
+ExecStart=/usr/bin/node server/index.js
+Restart=always
+RestartSec=3
+# Al detenerse, el servidor guarda todas las islas antes de salir
+KillSignal=SIGTERM
+TimeoutStopSec=15
+
+[Install]
+WantedBy=multi-user.target

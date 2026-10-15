@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover, user-scalable=no">
+  <meta name="theme-color" content="#f3c7a6">
+  <meta name="description" content="Una islita para construir de a dos: cultivar, pescar, decorar y explorar juntos.">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Rinconcito">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" type="image/png" href="icons/icon-192.png">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <link rel="stylesheet" href="css/style.css">
+  <title>Nuestro rinconcito</title>
+</head>
+<body>
+  <canvas id="world" aria-label="La isla"></canvas>
+  <div id="touch" hidden></div>
+  <div id="stick" aria-hidden="true"><div id="knob"></div></div>
+  <div id="hud" hidden></div>
+  <div id="sheet" class="sheet" hidden></div>
+  <div id="screens"></div>
+  <div id="modal-root"></div>
+  <div id="toasts" aria-live="polite"></div>
+  <div id="offline" hidden>
+    <div class="card">
+      <div class="spinner"></div>
+      <p id="offline-msg">Se perdió la conexión. Reconectando…</p>
+      <p class="small muted">El juego necesita internet para sincronizar la isla. No se pierde nada: todo está guardado en el servidor.</p>
+      <button type="button" class="btn primary" id="offline-retry">Reintentar ahora</button>
+    </div>
+  </div>
+  <noscript><p class="noscript">Nuestro rinconcito necesita JavaScript activado.</p></noscript>
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>
