@@ -1,0 +1,100 @@
+Emulador: 14 / API 34
+  Current WebView package (name, version): (com.google.android.webview, 113.0.5672.136)
+  Minimum targetSdkVersion: 33
+  Minimum WebView version code: 567263637
+Performing Streamed Install
+Success
+Dispositivo: sdk_gphone64_x86_64 emulator-5554
+
+▶ 1. Abrir la app recién instalada
+  ✔ la app esperó al servidor, abrió el juego y se identifica como app: RinconcitoApp/1.0.7
+
+▶ 2. Crear la isla desde el celular Android
+  ✔ isla creada en la app, código MY87FK4C
+
+▶ 3. Compartir la invitación con el menú de Android
+   actividad al frente: topResumedActivity=ActivityRecord{15db21b u0 com.android.intentresolver/.ChooserActivity t8}
+  ✔ se abrió el menú "Compartir con…" del teléfono
+
+▶ 4. El botón atrás del teléfono cierra el menú del juego
+  ✔ atrás cerró el menú (no cerró la app)
+
+▶ 5. La otra persona se une desde un navegador común
+  ✔ la app ve a Sofi conectada
+
+▶ 6. Moverse y juntar algo desde la app; el navegador lo ve
+  ✔ caminó, juntó ramitas y Sofi lo vio en tiempo real
+
+▶ 7. Cambiar servidor desde Ajustes y volver
+  ✔ la pantalla de servidor muestra la dirección guardada y "Volver" regresa a la isla como Lau
+
+▶ 8. Minimizar con atrás y volver a abrir
+  ✔ se minimizó sin cerrarse y al volver siguió conectada
+
+▶ 9. Cerrar la app del todo y volver a entrar: sigue siendo Lau
+  ✔ volvió como Lau, con sus 3 ramitas
+
+▶ 10. Celular apaisado
+  ✔ captura apaisada
+
+Capturas en: capturas-android
+10-15 22:52:18.071 I/AppsFilter(  520): interaction: PackageSetting{c45e34 io.github.unicorniotoxico.rinconcito/10192} -> PackageSetting{51e5eb3 com.android.internal.emulation.pixel_2_xl/10016} BLOCKED
+10-15 22:52:18.071 I/AppsFilter(  520): interaction: PackageSetting{c45e34 io.github.unicorniotoxico.rinconcito/10192} -> PackageSetting{3b0c70 com.android.internal.emulation.pixel_3_xl/10056} BLOCKED
+10-15 22:52:18.071 I/AppsFilter(  520): interaction: PackageSetting{c45e34 io.github.unicorniotoxico.rinconcito/10192} -> PackageSetting{58e9be9 com.android.internal.emulation.pixel_4_xl/10047} BLOCKED
+10-15 22:52:18.071 I/AppsFilter(  520): interaction: PackageSetting{c45e34 io.github.unicorniotoxico.rinconcito/10192} -> PackageSetting{6f906e com.android.internal.emulation.pixel_fold/10006} BLOCKED
+10-15 22:52:18.071 I/AppsFilter(  520): interaction: PackageSetting{c45e34 io.github.unicorniotoxico.rinconcito/10192} -> PackageSetting{96330f com.android.bookmarkprovider/10114} BLOCKED
+10-15 22:52:18.071 I/AppsFilter(  520): interaction: PackageSetting{c45e34 io.github.unicorniotoxico.rinconcito/10192} -> PackageSetting{1c7f9c com.google.android.overlay.pixelconfigcommon/10014} BLOCKED
+10-15 22:52:18.071 I/AppsFilter(  520): interaction: PackageSetting{c45e34 io.github.unicorniotoxico.rinconcito/10192} -> PackageSetting{9ac0da5 com.android.systemui.accessibility.accessibilitymenu.auto_generated_rro_product__/10050} BLOCKED
+10-15 22:52:18.071 I/AppsFilter(  520): interaction: PackageSetting{c45e34 io.github.unicorniotoxico.rinconcito/10192} -> PackageSetting{d08457a com.android.systemui.emulation.pixel_3a/10013} BLOCKED
+10-15 22:52:18.071 I/AppsFilter(  520): interaction: PackageSetting{c45e34 io.github.unicorniotoxico.rinconcito/10192} -> PackageSetting{80cf12b com.android.systemui.emulation.pixel_4a/10000} BLOCKED
+10-15 22:52:18.071 I/AppsFilter(  520): interaction: PackageSetting{c45e34 io.github.unicorniotoxico.rinconcito/10192} -> PackageSetting{13ff988 com.android.systemui.emulation.pixel_6a/10042} BLOCKED
+10-15 22:52:18.071 I/AppsFilter(  520): interaction: PackageSetting{c45e34 io.github.unicorniotoxico.rinconcito/10192} -> PackageSetting{d74df21 com.android.systemui.emulation.pixel_7a/10017} BLOCKED
+10-15 22:52:18.071 I/AppsFilter(  520): interaction: PackageSetting{c45e34 io.github.unicorniotoxico.rinconcito/10192} -> PackageSetting{b453f46 com.google.android.settings.intelligence/10118} BLOCKED
+10-15 22:52:18.071 I/AppsFilter(  520): interaction: PackageSetting{c45e34 io.github.unicorniotoxico.rinconcito/10192} -> PackageSetting{8b163cd com.google.android.projection.gearhead/10123} BLOCKED
+10-15 22:52:18.071 I/AppsFilter(  520): interaction: PackageSetting{c45e34 io.github.unicorniotoxico.rinconcito/10192} -> PackageSetting{be77507 com.google.android.uwb.resources/10175} BLOCKED
+10-15 22:52:18.072 I/AppsFilter(  520): interaction: PackageSetting{c45e34 io.github.unicorniotoxico.rinconcito/10192} -> PackageSetting{d7e2482 com.android.cts.ctsshim/10179} BLOCKED
+10-15 22:52:18.072 I/AppsFilter(  520): interaction: PackageSetting{c45e34 io.github.unicorniotoxico.rinconcito/10192} -> PackageSetting{19f2634 com.google.android.wifi.resources/10181} BLOCKED
+10-15 22:52:18.072 I/AppsFilter(  520): interaction: PackageSetting{c45e34 io.github.unicorniotoxico.rinconcito/10192} -> PackageSetting{e9f4c5d com.google.android.wifi.dialog/10182} BLOCKED
+10-15 22:52:18.072 I/AppsFilter(  520): interaction: PackageSetting{c45e34 io.github.unicorniotoxico.rinconcito/10192} -> PackageSetting{609d2 com.google.android.apps.wallpaper/10161} BLOCKED
+10-15 22:52:18.072 I/AppsFilter(  520): interaction: PackageSetting{c45e34 io.github.unicorniotoxico.rinconcito/10192} -> PackageSetting{3fc5aa3 com.google.android.odad/10122} BLOCKED
+10-15 22:52:18.072 I/AppsFilter(  520): interaction: PackageSetting{c45e34 io.github.unicorniotoxico.rinconcito/10192} -> PackageSetting{32271a0 com.android.settings.auto_generated_rro_product__/10028} BLOCKED
+10-15 22:52:18.072 I/AppsFilter(  520): interaction: PackageSetting{c45e34 io.github.unicorniotoxico.rinconcito/10192} -> PackageSetting{6095159 com.android.internal.systemui.navbar.gestural/10051} BLOCKED
+10-15 22:52:18.072 I/AppsFilter(  520): interaction: PackageSetting{c45e34 io.github.unicorniotoxico.rinconcito/10192} -> PackageSetting{c96f11e com.google.android.apps.youtube.music/10156} BLOCKED
+10-15 22:52:18.072 I/AppsFilter(  520): interaction: PackageSetting{c45e34 io.github.unicorniotoxico.rinconcito/10192} -> PackageSetting{4effdff com.android.bluetoothmidiservice/10107} BLOCKED
+10-15 22:52:18.072 I/AppsFilter(  520): interaction: PackageSetting{c45e34 io.github.unicorniotoxico.rinconcito/10192} -> PackageSetting{bcd07cc com.android.storagemanager.auto_generated_rro_product__/10026} BLOCKED
+10-15 22:52:18.072 I/AppsFilter(  520): interaction: PackageSetting{c45e34 io.github.unicorniotoxico.rinconcito/10192} -> PackageSetting{274aa15 com.google.android.cellbroadcastreceiver/10172} BLOCKED
+10-15 22:52:18.072 I/AppsFilter(  520): interaction: PackageSetting{c45e34 io.github.unicorniotoxico.rinconcito/10192} -> PackageSetting{8bd012a com.android.phone.auto_generated_rro_product__/10061} BLOCKED
+10-15 22:52:18.072 I/AppsFilter(  520): interaction: PackageSetting{c45e34 io.github.unicorniotoxico.rinconcito/10192} -> PackageSetting{f507b1b android.auto_generated_rro_product__/10068} BLOCKED
+10-15 22:52:18.072 I/AppsFilter(  520): interaction: PackageSetting{c45e34 io.github.unicorniotoxico.rinconcito/10192} -> PackageSetting{ca8d4b8 com.android.internal.systemui.navbar.gestural_narrow_back/10052} BLOCKED
+10-15 22:52:18.072 I/AppsFilter(  520): interaction: PackageSetting{c45e34 io.github.unicorniotoxico.rinconcito/10192} -> PackageSetting{302d291 com.google.android.inputmethod.latin/10147} BLOCKED
+10-15 22:52:18.072 I/AppsFilter(  520): interaction: PackageSetting{c45e34 io.github.unicorniotoxico.rinconcito/10192} -> PackageSetting{18205f6 android.auto_generated_rro_vendor__/10075} BLOCKED
+10-15 22:52:18.072 I/AppsFilter(  520): interaction: PackageSetting{c45e34 io.github.unicorniotoxico.rinconcito/10192} -> PackageSetting{471adf7 com.google.android.apps.restore/10120} BLOCKED
+10-15 22:52:18.082 W/xico.rinconcito( 6554): Accessing hidden method Landroid/os/Trace;->isTagEnabled(J)Z (unsupported, reflection, allowed)
+10-15 22:52:18.082 W/xico.rinconcito( 6554): Accessing hidden method Landroid/os/Trace;->traceBegin(JLjava/lang/String;)V (unsupported, reflection, allowed)
+10-15 22:52:18.082 W/xico.rinconcito( 6554): Accessing hidden method Landroid/os/Trace;->traceEnd(J)V (unsupported, reflection, allowed)
+10-15 22:52:18.082 W/xico.rinconcito( 6554): Accessing hidden method Landroid/os/Trace;->asyncTraceBegin(JLjava/lang/String;I)V (unsupported, reflection, allowed)
+10-15 22:52:18.082 W/xico.rinconcito( 6554): Accessing hidden method Landroid/os/Trace;->asyncTraceEnd(JLjava/lang/String;I)V (unsupported, reflection, allowed)
+10-15 22:52:18.179 I/ActivityManager(  520): Start proc 6605:com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0/u0i1 for  {io.github.unicorniotoxico.rinconcito/org.chromium.content.app.SandboxedProcessService0:0}
+10-15 22:52:18.240 E/chromium( 6554): [ERROR:simple_backend_impl.cc(749)] Simple Cache Backend: cache directory inaccessible right after creation; path: /data/user/0/io.github.unicorniotoxico.rinconcito/cache/WebView/Default/HTTP Cache/Code Cache/js
+10-15 22:52:18.241 E/chromium( 6554): [ERROR:simple_version_upgrade.cc(152)] Failed to write a new fake index.
+10-15 22:52:18.244 E/chromium( 6554): [ERROR:disk_cache.cc(205)] Unable to create cache
+10-15 22:52:18.269 I/cr_WebViewApkApp( 6605): Launched version=113.0.5672.136 minSdkVersion=29 isBundle=false processName=com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0
+10-15 22:52:18.269 D/ConnectivityService(  520): requestNetwork for uid/pid:10192/6554 activeRequest: null callbackRequest: 147 [NetworkRequest [ REQUEST id=148, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED&NOT_VCN_MANAGED Uid: 10192 RequestorUid: 10192 RequestorPkg: io.github.unicorniotoxico.rinconcito UnderlyingNetworks: Null] ]] callback flags: 0 order: 2147483647
+10-15 22:52:18.272 D/WifiNetworkFactory(  520): got request NetworkRequest [ REQUEST id=148, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED&NOT_VCN_MANAGED Uid: 10192 RequestorUid: 10192 RequestorPkg: io.github.unicorniotoxico.rinconcito UnderlyingNetworks: Null] ]
+10-15 22:52:18.273 D/UntrustedWifiNetworkFactory(  520): got request NetworkRequest [ REQUEST id=148, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED&NOT_VCN_MANAGED Uid: 10192 RequestorUid: 10192 RequestorPkg: io.github.unicorniotoxico.rinconcito UnderlyingNetworks: Null] ]
+10-15 22:52:18.273 D/OemPaidWifiNetworkFactory(  520): got request NetworkRequest [ REQUEST id=148, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED&NOT_VCN_MANAGED Uid: 10192 RequestorUid: 10192 RequestorPkg: io.github.unicorniotoxico.rinconcito UnderlyingNetworks: Null] ]
+10-15 22:52:18.274 D/MultiInternetWifiNetworkFactory(  520): got request NetworkRequest [ REQUEST id=148, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED&NOT_VCN_MANAGED Uid: 10192 RequestorUid: 10192 RequestorPkg: io.github.unicorniotoxico.rinconcito UnderlyingNetworks: Null] ]
+10-15 22:52:18.440 D/CoreBackPreview(  520): Window{e75b41 u0 io.github.unicorniotoxico.rinconcito/io.github.unicorniotoxico.rinconcito.MainActivity}: Setting back callback OnBackInvokedCallbackInfo{mCallback=android.window.IOnBackInvokedCallback$Stub$Proxy@635eb5d, mPriority=0, mIsAnimationCallback=false}
+10-15 22:52:18.671 W/ziparchive(  520): Unable to open '/data/app/~~LNRoIm0aKPLl_MGrGBNBjg==/io.github.unicorniotoxico.rinconcito-p9Qn-Ie0Xx3PIOwNi1qlSw==/base.dm': No such file or directory
+10-15 22:52:18.692 I/ActivityTaskManager(  520): Displayed io.github.unicorniotoxico.rinconcito/.MainActivity for user 0: +1s87ms
+10-15 22:52:18.739 W/InputManager-JNI(  520): Input channel object '524c4d1 Splash Screen io.github.unicorniotoxico.rinconcito (client)' was disposed without first being removed with the input manager!
+10-15 22:52:18.742 D/CoreBackPreview(  520): Window{524c4d1 u0 Splash Screen io.github.unicorniotoxico.rinconcito EXITING}: Setting back callback null
+10-15 22:52:18.928 I/ImeTracker(  520): io.github.unicorniotoxico.rinconcito:10f2dd4: onRequestHide at ORIGIN_SERVER_HIDE_INPUT reason HIDE_UNSPECIFIED_WINDOW
+10-15 22:52:18.929 I/ImeTracker(  520): io.github.unicorniotoxico.rinconcito:10f2dd4: onCancelled at PHASE_SERVER_SHOULD_HIDE
+10-15 22:52:18.962 I/GoogleInputMethodService( 1485): GoogleInputMethodService.onStartInput():1877 onStartInput(EditorInfo{inputType=0x0(NULL) imeOptions=0x0 privateImeOptions=null actionName=UNSPECIFIED actionLabel=null actionId=0 initialSelStart=-1 initialSelEnd=-1 initialCapsMode=0x0 hintText=null label=null packageName=io.github.unicorniotoxico.rinconcito fieldId=0 fieldName=null extras=null}, false)
+10-15 22:52:19.128 I/AppsFilter(  520): interaction: PackageSetting{c45e34 io.github.unicorniotoxico.rinconcito/10192} -> PackageSetting{5c3410e com.google.android.googlequicksearchbox/10132} BLOCKED
+10-15 22:52:19.880 I/chromium( 6554): [INFO:CONSOLE(0)] "Error with Permissions-Policy header: Unrecognized feature: 'payment'.", source:  (0)
+10-15 22:52:21.912 I/AppsFilter(  520): interaction: PackageSetting{c45e34 io.github.unicorniotoxico.rinconcito/10192} -> PackageSetting{6fdfd78 com.google.android.contacts/10155} BLOCKED
+10-15 22:52:26.855 I/GoogleInputMethodService( 1485): GoogleInputMethodService.onStartInput():1877 onStartInput(EditorInfo{inputType=0x0(NULL) imeOptions=0x0 privateImeOptions=null actionName=UNSPECIFIED actionLabel=null actionId=0 initialSelStart=-1 initialSelEnd=-1 initialCapsMode=0x0 hintText=null label=null packageName=io.github.unicorniotoxico.rinconcito fieldId=0 fieldName=null extras=null}, true)
+10-15 22:52:26.875 I/WindowManager(  520): finishDrawing of orientation change: Window{e75b41 u0 io.github.unicorniotoxico.rinconcito/io.github.unicorniotoxico.rinconcito.MainActivity} 154ms
+10-15 22:52:26.883 V/WindowManager(  520):     info={id=14 t=CHANGE f=0x0 trk=0 r=[0@Point(0, 0)] c=[{WCT{RemoteToken{5ba3d09 Task{ea7a70c #9 type=standard A=10192:io.github.unicorniotoxico.rinconcito}}} m=CHANGE f=NONE p=WCT{RemoteToken{2082261 DefaultTaskDisplayArea@64926213}} leash=Surface(name=Task=9)/@0x65fdd0d sb=Rect(0, 0 - 1080, 2400) eb=Rect(0, 0 - 2400, 1080) d=0 r=0->1:0},{WCT{RemoteToken{2082261 DefaultTaskDisplayArea@64926213}} m=CHANGE f=NONE p=WCT{RemoteToken{ff66186 Display{#0 state=ON size=2400x1080 ROTATION_90}}} leash=Surface(name=DefaultTaskDisplayArea)/@0x422dbe7 sb=Rect(0, 0 - 1080, 2400) eb=Rect(0, 0 - 2400, 1080) d=0 r=0->1:-1},{WCT{RemoteToken{ff66186 Display{#0 state=ON size=2400x1080 ROTATION_90}}} m=CHANGE f=IS_DISPLAY leash=Surface(name=WindowedMagnification:0:31)/@0x228f1f0 sb=Rect(0, 0 - 1080, 2400) eb=Rect(0, 0 - 2400, 1080) d=0 r=0->1:-1}]}

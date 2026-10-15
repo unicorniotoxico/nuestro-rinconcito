@@ -1,0 +1,4 @@
+Prueba en Android
+resultado: success
+commit: 053efc186ca20308b25e9428b9cd32dc0df6c1d4
+ejecución: https://github.com/unicorniotoxico/nuestro-rinconcito/actions/runs/38819612612
