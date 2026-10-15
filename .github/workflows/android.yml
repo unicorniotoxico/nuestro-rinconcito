@@ -135,6 +135,22 @@ jobs:
           name: capturas-android
           path: capturas-android
 
+      # Copia las capturas y el registro a la rama "ci-resultados" para poder
+      # verlos desde el celular sin descargar artefactos.
+      - name: Publicar capturas en la rama ci-resultados
+        if: always() && github.ref == 'refs/heads/main'
+        env:
+          ESTADO: ${{ job.status }}
+        run: |
+          mkdir -p capturas-android && cd capturas-android
+          printf "Prueba en Android\nresultado: %s\ncommit: %s\nejecución: %s/%s/actions/runs/%s\n" "$ESTADO" "${{ github.sha }}" "${{ github.server_url }}" "${{ github.repository }}" "${{ github.run_id }}" > LEEME.txt
+          git init -q -b ci-resultados
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -qm "Prueba en Android: $ESTADO (${{ github.sha }})"
+          git push -qf "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" HEAD:ci-resultados
+
   publicar:
     name: Publicar en Releases
     needs: [compilar, probar]

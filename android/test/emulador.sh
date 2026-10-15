@@ -2,6 +2,8 @@
 # Corre dentro del emulador de Android en GitHub Actions (ver .github/workflows/android.yml).
 set -uo pipefail
 mkdir -p capturas-android
+exec > >(tee capturas-android/salida.txt) 2>&1
+echo "Emulador: $(adb shell getprop ro.build.version.release 2>/dev/null) / API $(adb shell getprop ro.build.version.sdk 2>/dev/null)"
 adb wait-for-device
 adb shell 'while [ "$(getprop sys.boot_completed)" != "1" ]; do sleep 1; done'
 adb shell settings put global window_animation_scale 0
